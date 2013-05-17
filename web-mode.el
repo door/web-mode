@@ -2822,7 +2822,7 @@ point is at the beginning of the line."
 
     (when (and offset (not (eq cur-indentation offset)))
       (setq offset (max 0 offset))
-      (indent-line-to offset))
+      (save-excursion (indent-line-to offset)))
 
     (if (< (current-column) (current-indentation)) (back-to-indentation))
 
