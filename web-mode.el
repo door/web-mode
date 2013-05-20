@@ -4952,4 +4952,56 @@ point is at the beginning of the line."
 
 (provide 'web-mode)
 
+
+(add-hook 'web-mode-hook
+          (lambda ()
+            (print 'web-mode-start)
+            (make-local-variable 'comment-start)
+            (make-local-variable 'comment-start-skip)
+            (make-local-variable 'comment-end)
+            (make-local-variable 'comment-end-skip)))
+
+
+(defvar web-mode-comment-types)
+
+
+(setq web-mode-comment-types
+      '(("html"
+         (start "<!-- ")
+         (start-skip "<!--[ \t]*")
+         (end " -->")
+         (end-skip) "[ \t]*--[ \t\n]*>")
+        
+        ("style"
+         (start "/* ")
+         (start-skip "/\\*+[ \t]*") 
+         (end " */")
+         (end-skip "[ \t]*\\*+/"))
+        
+        ("script"
+         (start "// ")
+         (start-skip "//+")
+         (end "")
+         (end-skip nil))))
+
+
+(defun web-mode-comment-dwim (arg)
+  (interactive "P")
+  (let ((type (web-mode-line-type (if mark-active
+                                      (region-beginning)
+                                    (line-beginning-position)))))
+    ;; (message type)
+    (let ((cs (cdr (assoc type web-mode-comment-types))))
+      ;; (message (format "web-mode-comment-dwim: cs=%s" cs))
+      (when cs
+        (setq comment-start      (cadr (assoc 'start      cs))
+              comment-start-skip (cadr (assoc 'start-skip cs))
+              comment-end        (cadr (assoc 'end        cs))
+              comment-end-skip   (cadr (assoc 'end-skip   cs)))
+        ;; (message (format "web-mode-comment-dwim: start=%s start-skip=%s end=%s end-skip=%s"
+        ;;                  comment-start comment-start-skip comment-end comment-end-skip))
+        (comment-dwim arg)
+        (web-mode-scan-region (point-min) (point-max))))))
+
 ;;; web-mode.el ends here
+
