@@ -32,6 +32,24 @@
 ;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+
+;;; web-mode
+;;
+;; (add-to-list 'load-path "~/.emacs.d/elisp/web-mode") 
+;;
+;; (require 'web-mode nil t)
+;;
+;; (when (fboundp 'web-mode) 
+;;
+;;   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;;
+;;   (setq web-mode-markup-indent-offset 2
+;;         web-mode-css-indent-offset 4
+;;         web-mode-code-indent-offset 8)
+;;
+;;   (define-key web-mode-map (kbd "M-;") 'web-mode-comment-dwim))
+
+
 (defgroup web-mode nil
   "Major mode for editing web templates: HTML files embedding client parts (CSS/JavaScript) and server blocs (PHP, JSP, ASP, Django/Twig, Smarty, etc.)."
   :version "5.0.19"
@@ -4955,7 +4973,7 @@ point is at the beginning of the line."
 
 (add-hook 'web-mode-hook
           (lambda ()
-            (print 'web-mode-start)
+            ;; (print 'web-mode-start)
             (make-local-variable 'comment-start)
             (make-local-variable 'comment-start-skip)
             (make-local-variable 'comment-end)
